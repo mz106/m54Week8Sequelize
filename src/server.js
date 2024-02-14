@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 
 const Book = require("./books/model");
+const Genre = require("./genres/model");
 
 const bookRouter = require("./books/routes");
 const genreRouter = require("./genres/routes");
@@ -17,6 +18,7 @@ app.use(genreRouter);
 
 const syncTables = async () => {
   await Book.sync();
+  await Genre.sync();
 };
 
 app.get("/health", (req, res) => {
