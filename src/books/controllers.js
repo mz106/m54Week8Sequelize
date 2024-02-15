@@ -1,4 +1,5 @@
 const Book = require("./model");
+const Genre = require("../genres/model");
 
 const addBook = async (req, res) => {
   try {
@@ -14,6 +15,20 @@ const addBook = async (req, res) => {
   }
 };
 
+const getAllBooks = async (req, res) => {
+  const books = await Book.findAll({ include: "Genre" });
+  res.send(books);
+};
+
+const getSingleBookByTitle = async (req, res) => {
+  const book = await Book.findOne({ where: { title: req.params.title } });
+  const genre = await Genre.findOne({ where: { id: book.GenreId } });
+
+  res.send({ book: book, genre: genre });
+};
+
 module.exports = {
   addBook: addBook,
+  getAllBooks: getAllBooks,
+  getSingleBookByTitle: getSingleBookByTitle,
 };
